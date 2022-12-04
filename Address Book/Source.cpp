@@ -98,14 +98,72 @@ void add() {
 }
 
 void edit() {
+	system("cls");
 
+	int option;
+	double cnt;
+	string f_name, l_name, address, contact, f_name2, l_name2, address2, contact2, option2;
+
+	ifstream modify("database.txt");
+	ofstream temp("temp.txt", ios::app);
+	cout << "Type the ID: ";
+	cin >> option;
+	cout << '\n';
+	if (option == 0 || option > 100) {
+		cout << "Error: ID doesn't exist";
+		system("pause>0");
+		edit();
+	}
+
+	while (modify >> cnt >> f_name2 >> l_name2 >> address2 >> contact2)
+		if (cnt == option) {
+			cout << cnt << ' ' << f_name2 << ' ' << l_name2 << ' ' << address2 << ' ' << contact2 << "\n\n";
+			cout << "Are you sure? yes/no ";
+			cin >> option2;
+			cout << '\n';
+
+			if (option2 == "no")
+				main();
+			else {
+				if (cnt < option)
+					temp << cnt << ' ' << f_name2 << ' ' << l_name2 << ' ' << address2 << ' ' << contact2 << '\n';
+				else if (cnt == option) {
+					cout << "New First name: ";
+					cin >> f_name;
+					cout << "New Last name: ";
+					cin >> l_name;
+					cout << "New Address: ";
+					cin >> address;
+					cout << "New Contact: ";
+					cin >> contact;
+
+					temp << option << ' ' << f_name << ' ' << l_name << ' ' << address << ' ' << contact << '\n';
+				} else
+					temp << cnt << ' ' << f_name2 << ' ' << l_name2 << ' ' << address2 << ' ' << contact2 << '\n';
+			}
+		}
+	modify.close();
+	temp.close();
+
+	if (remove("database.txt") == 0)
+		cout << "File removed successfully\n";
+	else
+		cout << "Remove error\n";
+
+	if (rename("temp.txt", "database.txt") == 0)
+		cout << "File renamed successfully\n";
+	else
+		cout << "Rename error\n";
+
+	system("pause");
+	system("cls");
 }
 
 void view() {
 	system("cls");
 	double cnt;
 	string f_name, l_name, address, contact;
-	cout << "Nr." << setw(19) << "First Name" << setw(24) << "Last Name" << setw(24) << "Address" << setw(30) << "Contact\n\n";
+	cout << "ID" << setw(19) << "First Name" << setw(24) << "Last Name" << setw(24) << "Address" << setw(30) << "Contact\n\n";
 
 	ifstream fin("database.txt");
 	while (fin >> cnt >> f_name >> l_name >> address >> contact) 
@@ -117,6 +175,47 @@ void view() {
 }
 
 void Delete() {
+	system("cls");
+	int option;
+	double cnt;
+	string f_name, l_name, address, contact, f_name2, l_name2, address2, contact2, option2;
+
+	ifstream modify("database.txt");
+	ofstream temp("temp.txt", ios::app);
+	cout << "Type the ID: ";
+	cin >> option;
+	cout << '\n';
+
+	while (modify >> cnt >> f_name2 >> l_name2 >> address2 >> contact2)
+		if (cnt == option) {
+			cout << cnt << ' ' << f_name2 << ' ' << l_name2 << ' ' << address2 << ' ' << contact2 << "\n\n";
+			cout << "Are you sure? yes/no ";
+			cin >> option2;
+			cout << '\n';
+
+			if (option2 == "no")
+				main();
+		}
+		else if (cnt < option)
+			temp << cnt << ' ' << f_name2 << ' ' << l_name2 << ' ' << address2 << ' ' << contact2 << '\n';
+		else
+			temp << cnt - 1 << ' ' << f_name2 << ' ' << l_name2 << ' ' << address2 << ' ' << contact2 << '\n';
+
+	modify.close();
+	temp.close();
+
+	if (remove("database.txt") == 0)
+		cout << "File removed successfully\n";
+	else
+		cout << "Remove error\n";
+
+	if (rename("temp.txt", "database.txt") == 0)
+		cout << "File renamed successfully\n";
+	else
+		cout << "Rename error\n";
+
+	system("pause");
+	system("cls");	
 }
 
 void search() {
